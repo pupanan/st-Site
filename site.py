@@ -58,26 +58,34 @@ if chart_types:
 
         country_data = df[df['Country'] == country]
         window_size = 3  # Define the window size here
-        country_data = df[df['Country'] == country]
 
         if "Line Chart" in chart_types or "Bar Chart" in chart_types:
-            st.write(f"#### Line and Bar Charts 📈 ")
+            st.write(f"#### Line and Bar Chart 📈📊")
             fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 3))
             x = range(len(country_data))
-            pop_ad_mod_sev_smoothed = np.convolve(country_data['pop_ad_mod_sev'], np.ones(window_size) / window_size, mode='same')
-            pop_ad_sev_smoothed = np.convolve(country_data['pop_ad_sev'], np.ones(window_size) / window_size, mode='same')
-            ax1.plot(x[:len(country_data)], pop_ad_mod_sev_smoothed, label=f'{country} - pop_ad_mod_sev', color='b')
-            ax2.bar(x[:len(country_data)], pop_ad_mod_sev_smoothed, label=f'{country} - pop_ad_mod_sev', color='b')
-            ax1.plot(x[:len(country_data)], pop_ad_sev_smoothed, label=f'{country} - pop_ad_sev', linestyle='-', color='r')
-            ax2.bar(x[:len(country_data)], pop_ad_sev_smoothed, label=f'{country} - pop_ad_sev', color='r', alpha=0.5)
-            ax1.set_xlabel('Data Point Index')
-            ax2.set_xlabel('Data Point Index')
-            ax1.set_ylabel('Values')
-            ax2.set_ylabel('Values')
-            ax1.tick_params(axis='x', rotation=45)
-            ax2.tick_params(axis='x', rotation=45)
-            ax1.legend(loc='best', frameon=True)  # Explicitly set the legend location
-            ax2.legend(loc='best', frameon=True)  # Explicitly set the legend location
+            pop_ad_mod_sev_smoothed = np.convolve(country_data['pop_ad_mod_sev'], np.ones(window_size) / window_size,
+                                                  mode='same')
+            pop_ad_sev_smoothed = np.convolve(country_data['pop_ad_sev'], np.ones(window_size) / window_size,
+                                              mode='same')
+
+            if "Line Chart" in chart_types:
+                ax1.plot(x[:len(country_data)], pop_ad_mod_sev_smoothed, label=f'{country} - pop_ad_mod_sev', color='b')
+                ax1.plot(x[:len(country_data)], pop_ad_sev_smoothed, label=f'{country} - pop_ad_sev', linestyle='-',
+                         color='r')
+                ax1.set_xlabel('Data Point Index')
+                ax1.set_ylabel('Values')
+                ax1.tick_params(axis='x', rotation=45)
+                ax1.legend(loc='best', frameon=True)  # Explicitly set the legend location
+
+            if "Bar Chart" in chart_types:
+                ax2.bar(x[:len(country_data)], pop_ad_mod_sev_smoothed, label=f'{country} - pop_ad_mod_sev', color='b')
+                ax2.bar(x[:len(country_data)], pop_ad_sev_smoothed, label=f'{country} - pop_ad_sev', color='r',
+                        alpha=0.5)
+                ax2.set_xlabel('Data Point Index')
+                ax2.set_ylabel('Values')
+                ax2.tick_params(axis='x', rotation=45)
+                ax2.legend(loc='best', frameon=True)  # Explicitly set the legend location
+
             st.pyplot(fig)
             country_data = df[df['Country'] == country].head(20)
 
